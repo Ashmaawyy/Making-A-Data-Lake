@@ -13,7 +13,7 @@ os.environ['AWS_ACCESS_KEY_ID']=config['AWS_ACCESS_KEY_ID']
 os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS_SECRET_ACCESS_KEY']
 
 
-def create_spark_session():
+def get_spark_session():
     spark_session = SparkSession \
         .builder \
         .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:2.7.0") \
@@ -102,7 +102,7 @@ def process_logs_data(spark_session, input_data, output_data):
 
 
 def main():
-    spark_session = create_spark_session()
+    spark_session = get_spark_session()
     input_data = "s3a://udacity-dend/"
     output_data = ""
     
