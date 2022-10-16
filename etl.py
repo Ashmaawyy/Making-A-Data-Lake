@@ -61,7 +61,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
     songs_table = songs_df.select('song_id', 'title', 'artist_id', 'year', 'duration')
 
     # write songs table to parquet files partitioned by year and artist
-    songs_table.write.parquet(output_data_dir + 'songs_table.parquet')
+    songs_table.write.partitionBy('year', 'artist_id').parquet(output_data_dir + 'songs_table.parquet')
 
     # extract columns to create artists table
     artists_table = songs_df.select(
@@ -121,7 +121,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                                             'last_name',
                                             'gender',
                                             'level'
-                                            )
+                                            ).distinct()
 
     # write users table to parquet files
     users_table.write.parquet(output_data_dir + 'users_table.parquet')
@@ -147,10 +147,10 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                                         'week_of_year',
                                         'month',
                                         'year'
-                                        )
+                                        ).distinct()
 
     # write time table to parquet files partitioned by year and month
-    time_table.write.parquet(output_data_dir + 'time_table.parquet')
+    time_table.write.partitionBy('year', 'month').parquet(output_data_dir + 'time_table.parquet')
 
     # read in song data to use for songplays table
     songs_df = spark.read.load(input_data_dir + 'song_data')
@@ -170,7 +170,9 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                                             )
 
     # write songplays table to parquet files partitioned by year and month
-    songplays_table.write.parquet(output_data_dir + 'songplays_table.parquet')
+    songplays_table.write \
+        .partitionBy(year('start_time'), month('start_time')) \
+        .parquet(output_data_dir + 'songplays_table.parquet')
 
 
 def main():
