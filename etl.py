@@ -147,7 +147,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     # read in song data to use for songplays table
     songs_df = spark.read.load(input_data_dir + 'song_data')
 
-    # extract columns from joined song and log datasets to create songplays table 
+    # extract columns from joined song and log datasets to create songplays table
     songplays_table = logs_by_actions_df.join(songs_df, 'length') \
                                         .dropDuplicates(['user_id', 'song_id']) \
                                         .select(
@@ -170,7 +170,7 @@ def main():
     input_data_dir = "s3a://udacity-dend/"
     output_data_dir = "/usr/"
 
-    process_song_data(spark, input_data_dir, output_data_dir)    
+    process_song_data(spark, input_data_dir, output_data_dir)
     process_log_data(spark, input_data_dir, output_data_dir)
 
 
