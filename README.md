@@ -18,6 +18,7 @@
 <code> pip install -r requirements.txt </code>
 
 <br>
+
 ## The etl.py script
 
 - It contains two main functions (<code>process_song_data()</code>, <code> process_log_data()</code>)
