@@ -32,6 +32,12 @@ def create_spark_session():
 
 
 def process_song_data(spark, input_data_dir, output_data_dir):
+    """
+    - loads songs data from json files stored on an S3 bucket into a spark dataframe
+    - then loads its data to two dimention tables(songs_table, and artists_table)
+    - then it loads the tables into an HDFS.
+
+    """
     # get filepath to song data file
     song_data = input_data_dir + "song_data"
 
@@ -71,6 +77,12 @@ def process_song_data(spark, input_data_dir, output_data_dir):
 
 
 def process_log_data(spark, input_data_dir, output_data_dir):
+    """
+    - loads logs data from json files stored on an S3 bucket into a spark dataframe
+    - then loads its data to two dimention tables and one fact table (users_table, time_table, and songplays_table)
+    - then it loads the tables into an HDFS.
+    
+    """
     # get filepath to log data file
     log_data = input_data_dir + "/log_data"
 
