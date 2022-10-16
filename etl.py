@@ -79,7 +79,8 @@ def process_song_data(spark, input_data_dir, output_data_dir):
 def process_log_data(spark, input_data_dir, output_data_dir):
     """
     - loads logs data from json files stored on an S3 bucket into a spark dataframe
-    - then loads its data to two dimention tables and one fact table (users_table, time_table, and songplays_table)
+    - then loads its data to two dimention tables (users_table, time_table)
+        and one fact table (songplays_table)
     - then it loads the tables into an HDFS.
 
     """
