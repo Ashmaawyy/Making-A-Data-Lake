@@ -1,9 +1,19 @@
 import configparser
-from datetime import datetime
 import os
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, to_timestamp, dayofweek
-from pyspark.sql.types import StructType, StructField, DoubleType, StringType , IntegerType, LongType
+from pyspark.sql.functions import year, \
+                                  month, \
+                                  dayofmonth, \
+                                  hour, \
+                                  weekofyear, \
+                                  to_timestamp, \
+                                  dayofweek
+from pyspark.sql.types import StructType, \
+                              StructField, \
+                              DoubleType, \
+                              StringType , \
+                              IntegerType, \
+                              LongType
 
 
 config = configparser.ConfigParser()
@@ -25,7 +35,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
     # get filepath to song data file
     song_data = input_data_dir + "song_data"
 
-    song_data_schema = StringType([
+    song_data_schema = StructType([
         StructField('num_songs', IntegerType()),
         StructField('artist_id', StringType()),
         StructField('artist_latitude', DoubleType()),
@@ -64,7 +74,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     # get filepath to log data file
     log_data = input_data_dir + "/log_data"
 
-    log_data_schema = StringType([
+    log_data_schema = StructType([
         StructField('artist', StringType()),
         StructField('auth', StringType()),
         StructField('firstName', StringType()),
