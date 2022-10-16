@@ -25,4 +25,3 @@
 
 - <code>process_song_data()</code> loads songs data from json files stored on an S3 bucket into a spark dataframe and then loads its data to two dimention tables(songs_table, and artists_table) then it loads the tables into an HDFS.
 -  <code>process_log_data()</code> loads logs data from json files stored on an S3 bucket into a spark dataframe and then loads its data to two dimention tables and one fact table (users_table, time_table, and songplays_table) then it loads the tables into an HDFS.
-
