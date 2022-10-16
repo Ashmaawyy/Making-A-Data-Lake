@@ -11,7 +11,7 @@ from pyspark.sql.functions import year, \
 from pyspark.sql.types import StructType, \
                               StructField, \
                               DoubleType, \
-                              StringType , \
+                              StringType, \
                               IntegerType, \
                               LongType
 
@@ -19,8 +19,8 @@ from pyspark.sql.types import StructType, \
 config = configparser.ConfigParser()
 config.read('dl.cfg')
 
-os.environ['AWS_ACCESS_KEY_ID']="{}".format(*config['AWS_ACCESS_KEY_ID'].values())
-os.environ['AWS_SECRET_ACCESS_KEY']="{}".format(*config['AWS_SECRET_ACCESS_KEY'].values())
+os.environ['AWS_ACCESS_KEY_ID'] = "{}".format(*config['AWS_ACCESS_KEY_ID'].values())
+os.environ['AWS_SECRET_ACCESS_KEY'] = "{}".format(*config['AWS_SECRET_ACCESS_KEY'].values())
 
 
 def create_spark_session():
@@ -53,9 +53,9 @@ def process_song_data(spark, input_data_dir, output_data_dir):
         StructField('duration', DoubleType()),
         StructField('year', IntegerType())
     ])
-    
+
     # read song data file
-    songs_df = spark.read.json(song_data, schema = song_data_schema)
+    songs_df = spark.read.json(song_data, schema=song_data_schema)
 
     # extract columns to create songs table
     songs_table = songs_df.select('song_id', 'title', 'artist_id', 'year', 'duration')
@@ -81,7 +81,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     - loads logs data from json files stored on an S3 bucket into a spark dataframe
     - then loads its data to two dimention tables and one fact table (users_table, time_table, and songplays_table)
     - then it loads the tables into an HDFS.
-    
+
     """
     # get filepath to log data file
     log_data = input_data_dir + "/log_data"
@@ -108,20 +108,20 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     ])
 
     # read log data file
-    logs_df = spark.read.json(log_data, schema = log_data_schema)
-    
+    logs_df = spark.read.json(log_data, schema=log_data_schema)
+
     # filter by actions for song plays
     logs_by_actions_df = logs_df[logs_df.page == 'NextSong']
 
-    # extract columns for users table    
+    # extract columns for users table
     users_table = logs_by_actions_df.select('user_id', 'first_name', 'last_name', 'gender', 'level')
-    
+
     # write users table to parquet files
     users_table.write.parquet(output_data_dir + 'users_table.parquet')
 
     # create timestamp column from original timestamp column
     logs_by_actions_df = logs_by_actions_df.withColumn('start_time', to_timestamp('ts'))
-    
+
     # create datetime column from original timestamp column
     logs_by_actions_df = logs_by_actions_df.withColumn('user_year', year('time_stamp')) \
                          .withColumn('month', month('time_stamp')) \
@@ -129,7 +129,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                          .withColumn('day_of_week', dayofweek('time_stamp')) \
                          .withColumn('week_of_year', weekofyear('time_stamp')) \
                          .withColumn('hour', hour('time_stamp'))
-    
+
     # extract columns to create time table
     time_table = logs_by_actions_df.select(
                                         'start_time',
@@ -140,7 +140,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                                         'month',
                                         'year'
                                         )
-    
+
     # write time table to parquet files partitioned by year and month
     time_table.write.parquet(output_data_dir + 'time_table.parquet')
 
@@ -169,7 +169,7 @@ def main():
     spark = create_spark_session()
     input_data_dir = "s3a://udacity-dend/"
     output_data_dir = "/usr/"
-    
+
     process_song_data(spark, input_data_dir, output_data_dir)    
     process_log_data(spark, input_data_dir, output_data_dir)
 
