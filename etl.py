@@ -58,10 +58,12 @@ def process_song_data(spark, input_data_dir, output_data_dir):
     songs_df = spark.read.json(song_data, schema=song_data_schema)
 
     # extract columns to create songs table
-    songs_table = songs_df.select('song_id', 'title', 'artist_id', 'year', 'duration')
+    songs_table = songs_df.select('song_id', 'title', 'artist_id', 'year', 'duration').distinct()
 
     # write songs table to parquet files partitioned by year and artist
-    songs_table.write.partitionBy('year', 'artist_id').parquet(output_data_dir + 'songs_table.parquet')
+    songs_table.write \
+        .partitionBy('year', 'artist_id') \
+        .parquet(output_data_dir + 'songs_table.parquet')
 
     # extract columns to create artists table
     artists_table = songs_df.select(
@@ -70,7 +72,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
                                 'artist_location',
                                 'artist_latitude',
                                 'artist_longitude'
-                                )
+                                ).distinct()
 
     # write artists table to parquet files
     artists_table.parquet(output_data_dir + 'artists_table.parquet')
