@@ -39,7 +39,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
 
     """
     # get filepath to song data file
-    song_data = input_data_dir + "song_data"
+    song_data = input_data_dir + 'song_data'
 
     song_data_schema = StructType([
         StructField('num_songs', IntegerType()),
@@ -87,7 +87,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 
     """
     # get filepath to log data file
-    log_data = input_data_dir + "/log_data"
+    log_data = input_data_dir + "log_data"
 
     log_data_schema = StructType([
         StructField('artist', StringType()),
@@ -179,8 +179,8 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 
 def main():
     spark = create_spark_session()
-    input_data_dir = config.get('IO', 'INPUT_DATA_DIR')
-    output_data_dir = config.get('IO', 'OUTPUT_DATA_DIR')
+    input_data_dir = 's3a://udacity-dend/'
+    output_data_dir = '/usr/'
 
     process_song_data(spark, input_data_dir, output_data_dir)
     process_log_data(spark, input_data_dir, output_data_dir)
