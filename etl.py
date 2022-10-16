@@ -156,7 +156,7 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 def main():
     spark = create_spark_session()
     input_data_dir = "s3a://udacity-dend/"
-    output_data_dir = "/user/"
+    output_data_dir = "/usr/"
     
     process_song_data(spark, input_data_dir, output_data_dir)    
     process_log_data(spark, input_data_dir, output_data_dir)
