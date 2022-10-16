@@ -59,7 +59,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
 
     # extract columns to create songs table
     songs_table = songs_df.select('song_id', 'title', 'artist_id', 'year', 'duration')
-    
+
     # write songs table to parquet files partitioned by year and artist
     songs_table.write.parquet(output_data_dir + 'songs_table.parquet')
 
@@ -71,7 +71,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
                                 'artist_latitude',
                                 'artist_longitude'
                                 )
-    
+
     # write artists table to parquet files
     artists_table.parquet(output_data_dir + 'artists_table.parquet')
 
@@ -114,7 +114,13 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     logs_by_actions_df = logs_df[logs_df.page == 'NextSong']
 
     # extract columns for users table
-    users_table = logs_by_actions_df.select('user_id', 'first_name', 'last_name', 'gender', 'level')
+    users_table = logs_by_actions_df.select(
+                                            'user_id',
+                                            'first_name',
+                                            'last_name',
+                                            'gender',
+                                            'level'
+                                            )
 
     # write users table to parquet files
     users_table.write.parquet(output_data_dir + 'users_table.parquet')
@@ -123,7 +129,8 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     logs_by_actions_df = logs_by_actions_df.withColumn('start_time', to_timestamp('ts'))
 
     # create datetime column from original timestamp column
-    logs_by_actions_df = logs_by_actions_df.withColumn('user_year', year('time_stamp')) \
+    logs_by_actions_df = logs_by_actions_df \
+                         .withColumn('user_year', year('time_stamp')) \
                          .withColumn('month', month('time_stamp')) \
                          .withColumn('day_of_month', dayofmonth('time_stamp')) \
                          .withColumn('day_of_week', dayofweek('time_stamp')) \
