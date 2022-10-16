@@ -2,8 +2,7 @@ import configparser
 from datetime import datetime
 import os
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf, col
-from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, date_format
+from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, to_timestamp, dayofweek
 
 
 config = configparser.ConfigParser()
@@ -58,15 +57,25 @@ def process_log_data(spark, input_data_dir, output_data_dir):
     users_table.write.parquet(output_data_dir + 'users_table.parquet')
 
     # create timestamp column from original timestamp column
-    get_timestamp = udf()
-    logs_by_actions_df = 
+    logs_by_actions_df = logs_by_actions_df.withColumn('start_time', to_timestamp('ts'))
     
     # create datetime column from original timestamp column
-    get_datetime = udf()
-    logs_by_actions_df = 
+    logs_by_actions_df = logs_by_actions_df.withColumn('year', year('time_stamp')) \
+                         .withColumn('month', month('time_stamp')) \
+                         .withColumn('day_of_month', dayofmonth('time_stamp')) \
+                         .withColumn('day_of_week', dayofweek('time_stamp')) \
+                         .withColumn('week_of_year', weekofyear('time_stamp')) \
+                         .withColumn('hour', hour('time_stamp'))
     
     # extract columns to create time table
-    time_table = 
+    time_table = logs_by_actions_df.select(
+                                        'start_time',
+                                        'hour',
+                                        'day_of_month',
+                                        'day_of_week',
+                                        'week_of_year',
+                                        'month',
+                                        'year')
     
     # write time table to parquet files partitioned by year and month
     time_table.write.parquet(output_data_dir + 'time_table.parquet')
