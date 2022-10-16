@@ -19,8 +19,8 @@ from pyspark.sql.types import StructType, \
 config = configparser.ConfigParser()
 config.read('dl.cfg')
 
-os.environ['AWS_ACCESS_KEY_ID'] = "{}".format(*config['AWS_ACCESS_KEY_ID'].values())
-os.environ['AWS_SECRET_ACCESS_KEY'] = "{}".format(*config['AWS_SECRET_ACCESS_KEY'].values())
+os.environ['AWS_ACCESS_KEY_ID'] = config.get('ACCESS_KEYS', 'AWS_ACCESS_KEY_ID')
+os.environ['AWS_SECRET_ACCESS_KEY'] = config.get('ACCESS_KEYS', 'AWS_SECRET_ACCESS_KEY')
 
 
 def create_spark_session():
@@ -175,8 +175,8 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 
 def main():
     spark = create_spark_session()
-    input_data_dir = "s3a://udacity-dend/"
-    output_data_dir = "/usr/"
+    input_data_dir = config.get('IO', 'INPUT_DATA_DIR')
+    output_data_dir = config.get('IO', 'OUTPUT_DATA_DIR')
 
     process_song_data(spark, input_data_dir, output_data_dir)
     process_log_data(spark, input_data_dir, output_data_dir)
