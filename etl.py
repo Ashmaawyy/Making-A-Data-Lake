@@ -75,7 +75,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
                                 ).distinct()
 
     # write artists table to parquet files
-    artists_table.parquet(output_data_dir + 'artists_table.parquet')
+    artists_table.write.parquet(output_data_dir + 'artists_table.parquet')
 
 
 def process_log_data(spark, input_data_dir, output_data_dir):
