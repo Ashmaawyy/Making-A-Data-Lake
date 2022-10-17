@@ -126,9 +126,9 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 
     # extract columns for users table
     users_table = logs_by_actions_df.select(
-                                            'user_id',
-                                            'first_name',
-                                            'last_name',
+                                            'userId',
+                                            'firstName',
+                                            'lastName',
                                             'gender',
                                             'level'
                                             ).distinct()
@@ -168,16 +168,16 @@ def process_log_data(spark, input_data_dir, output_data_dir):
 
     # extract columns from joined song and log datasets to create songplays table
     songplays_table = logs_by_actions_df.join(songs_df, 'length') \
-                                        .dropDuplicates(['user_id', 'song_id']) \
+                                        .dropDuplicates(['userId', 'song_id']) \
                                         .select(
                                             'start_time',
-                                            'user_id',
+                                            'userId',
                                             'level',
                                             'song_id',
                                             'artist_id',
                                             'session_id',
                                             'location',
-                                            'user_agent'
+                                            'userAgent'
                                             )
 
     # write songplays table to parquet files partitioned by year and month
