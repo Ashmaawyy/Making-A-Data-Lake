@@ -152,7 +152,8 @@ def process_log_data(spark, input_data_dir, output_data_dir):
                                         ).distinct()
 
     # write time table to parquet files partitioned by year and month
-    time_table.write.partitionBy('year', 'month').parquet(output_data_dir + 'time_table.parquet')
+    time_table.write.partitionBy('year', 'month') \
+                    .parquet(output_data_dir + 'time_table.parquet')
 
     # read in song data to use for songplays table
     songs_df = spark.read.load(input_data_dir + 'song_data')
