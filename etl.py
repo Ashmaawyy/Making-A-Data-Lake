@@ -33,7 +33,7 @@ def create_spark_session():
     return spark
 
 
-def process_song_data(spark, input_data_dir, output_data_dir):
+def process_songs_data(spark, input_data_dir, output_data_dir):
     """
     - loads songs data from json files stored on an S3 bucket into a spark dataframe
     - then loads its data to two dimention tables(songs_table, and artists_table)
@@ -86,7 +86,7 @@ def process_song_data(spark, input_data_dir, output_data_dir):
     artists_table.write.parquet(output_data_dir + 'artists_table.parquet')
 
 
-def process_log_data(spark, input_data_dir, output_data_dir):
+def process_logs_data(spark, input_data_dir, output_data_dir):
     """
     - loads logs data from json files stored on an S3 bucket into a spark dataframe
     - then loads its data to two dimention tables (users_table, time_table)
@@ -191,8 +191,8 @@ def main():
     input_data_dir = 's3a://udacity-dend/'
     output_data_dir = '/usr/'
 
-    process_song_data(spark, input_data_dir, output_data_dir)
-    process_log_data(spark, input_data_dir, output_data_dir)
+    process_songs_data(spark, input_data_dir, output_data_dir)
+    process_logs_data(spark, input_data_dir, output_data_dir)
 
 
 if __name__ == "__main__":
