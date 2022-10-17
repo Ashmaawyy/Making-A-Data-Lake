@@ -1,19 +1,21 @@
 import configparser
 import os
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import year, \
-                                  month, \
-                                  dayofmonth, \
-                                  hour, \
-                                  weekofyear, \
-                                  to_timestamp, \
-                                  dayofweek
-from pyspark.sql.types import StructType, \
-                              StructField, \
-                              DoubleType, \
-                              StringType, \
-                              IntegerType, \
-                              LongType
+from pyspark.sql.functions import \
+    year, \
+    month, \
+    dayofmonth, \
+    hour, \
+    weekofyear, \
+    to_timestamp, \
+    dayofweek
+from pyspark.sql.types import \
+    StructType, \
+    StructField, \
+    DoubleType, \
+    StringType, \
+    IntegerType, \
+    LongType
 
 
 config = configparser.ConfigParser()
