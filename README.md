@@ -15,7 +15,7 @@
 
 ## To run this project run the following command
 
-<code> pip install -r requirements.txt </code>
+<pre><code>pip install -r requirements.txt</code></pre>
 
 <br>
 
